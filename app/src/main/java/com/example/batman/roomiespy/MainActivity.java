@@ -41,13 +41,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-
-        //this.googleMap.addMarker(new MarkerOptions().position(locate).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         this.googleMap.setMyLocationEnabled(true);
-
         this.googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-
-
 
     }
 
