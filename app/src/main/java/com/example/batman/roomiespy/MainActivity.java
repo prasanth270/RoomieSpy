@@ -24,7 +24,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap googleMap;
     private LatLng locate;
     private LocationManager locationManager;
+    private CameraPosition cameraPosition;
 
+    public LatLng getLocate() {
+        return locate;
+    }
+
+    public void setLocate(LatLng locate) {
+        this.locate = locate;
+        setCameraPosition(new CameraPosition.Builder()
+                .target(getLocate()).zoom(15).build());
+    }
+
+    public CameraPosition getCameraPosition() {
+        return cameraPosition;
+    }
+
+    public void setCameraPosition(CameraPosition cameraPosition) {
+        this.cameraPosition = cameraPosition;
+        mapView.getMapAsync(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.onCreate(savedInstanceState);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,this);
-        mapView.getMapAsync(this);
-
     }
 
     @Override
@@ -43,9 +60,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.googleMap = googleMap;
         this.googleMap.setMyLocationEnabled(true);
         this.googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        this.googleMap.getUiSettings().setAllGesturesEnabled(true);
+        this.mapView.setClickable(false);
 
+        MapsInitializer.initialize(getApplicationContext());
+        this.googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition()));
     }
-
 
     @Override
     public void onResume() {
@@ -67,13 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
-        locate = new LatLng(location.getLatitude(),location.getLongitude());
-
-        MapsInitializer.initialize(getApplicationContext());
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(locate).zoom(15).bearing(90).tilt(40).build();
-        this.googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
+        setLocate(new LatLng(location.getLatitude(),location.getLongitude()));
     }
 
     @Override

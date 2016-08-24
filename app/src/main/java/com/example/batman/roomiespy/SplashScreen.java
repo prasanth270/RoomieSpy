@@ -16,12 +16,11 @@ public class SplashScreen extends Activity {
         setContentView(R.layout.activity_splash);
 
         new Handler().postDelayed(new Runnable() {
-
             @Override
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
+                Intent i = new Intent(SplashScreen.this, LoginActivity.class);
                 startActivity(i);
 
                 // close this activity
